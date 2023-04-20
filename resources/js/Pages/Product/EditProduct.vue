@@ -37,42 +37,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <!-- {{ form.arrayValues }} -->
-                                        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                                            <div>
-                                                <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                                                    <div class="mt-5 md:mt-0 md:col-span-2">
-                                                        <div v-for="(attribute, index) in attributes" :key="index"
-                                                            class="form-group">
-                                                            <label  class="col-form-label">{{
-                                                                attribute.name  }} :</label>
-                                                         
-                                                            <select v-model="form.arrayValues[index]" :id="`select${index}`"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option :value="null" checked>Chọn Danh mục thuộc tính
-                                                                </option>
-                                                                <option v-for="(value, index) in attribute.values"
-                                                                    :key="index" :value="value.id">
-                                                                    {{ value.value
-                                                                    }}
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                  
-                                                </div>
-                                            </div>
-                                            <hr class="mt-3" />
-                                            <div class="flex mb-4 form-group" :class="errors.SKU ? 'has-error' : ''">
-                                                <div class="w-1/2 h-12">
-                                                    <label
-                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">SKU</label>
-                                                    <input v-model="form.SKU"
-                                                        class="block mb-2 font-medium form-control text-sm rounded-lg" />
-                                                </div>
-                                                <div v-if="errors.SKU" class="text-rose-600">{{ errors.SKU }}</div>
-                                            </div>
-                                        </div>
+                                
+                                       
                                     </div>
                                 </div>
                                 <div>
@@ -164,21 +130,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <h3 class="font-semibold text-lg">Công cụ tìm kiếm</h3>
-                                        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                                            <h4 class="text-blue-600 font-semibold">Tên sản phẩm</h4>
-                                            <a href
-                                                class="block text-blue-300">https://cartonlebui.com/hop-carton-3-lop/ten-san-pham</a>
-                                            <span class="text-gray-500 text-xs">mô tả sản phẩm</span>
-
-                                            <div class="mb-6">
-                                                <h4 class="text-gray-500 text-lg">URL</h4>
-                                                <input
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                
                                 </div>
                             </div>
                             <div class="my-3 justify-end text-end">
@@ -247,11 +199,7 @@ export default {
     },
     methods: {
         save() {
-            if (this.form.arrayValues.length ==0 || this.form.arrayValues.includes(null) ||this.form.arrayValues.length < this.attributes.length) {
-                this.$swal("Error, Some values are missing.", {
-                icon: "error"
-                });
-            } else {
+         
                     this.form.post(route("warehouse.update", this.product.id), {
                         preserveState: true,
                         onError: errors => {
@@ -262,7 +210,7 @@ export default {
                             this.form.reset();
                         }
                     });
-                }
+                
         },
         onFileChange(e) {
             const files = e.target.files;

@@ -2,5 +2,7 @@
     "ProductCategory": true,
     "Order": true,
     "Blog": true,
-    "BlogPage": true
+    "BlogPage": true,
+    "Controller": true,
+    "OptionController": true
 }

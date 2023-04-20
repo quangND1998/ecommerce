@@ -16,7 +16,7 @@ class CreateProductRequest extends FormRequest
         return [
             
             'name'      =>  'required|max:255|unique:products,name',
-            'SKU'       =>  'required|unique:products,SKU',
+            // 'SKU'       =>  'required|unique:products,SKU',
             'description' => 'required',
             'price'     =>  'required|regex:/^\d+(\.\d{1,9})?/|numeric|gt:0',
             'cost'     =>  'regex:/^\d+(\.\d{1,9})?/|numeric|gt:0',

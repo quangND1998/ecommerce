@@ -95,11 +95,11 @@ class ProductController extends Controller
         if (!$category) {
             abort(404);
         }
-        $attributes = $category->attributes;
+        // $attributes = $category->attributes;
         $categories = CategoryProduct::where('parent_id', $category->id)->get()->push($category);
 
 
-        return Inertia::render('Product/AddProduct', compact('category', 'attributes', 'categories'));
+        return Inertia::render('Product/AddProduct', compact('category', 'categories'));
     }
 
     /**
@@ -133,10 +133,10 @@ class ProductController extends Controller
             }
         }
 
-        $values = AttributeValue::with('attribute')->whereIn('id', $request->arrayValues)->get();
-        if (count($values) > 0) {
-            $product->values()->sync($values);
-        }
+        // $values = AttributeValue::with('attribute')->whereIn('id', $request->arrayValues)->get();
+        // if (count($values) > 0) {
+        //     $product->values()->sync($values);
+        // }
 
         $category = CategoryProduct::with('category')->findOrFail($request->category_id);
         if ($category->parent_id) {
@@ -173,14 +173,14 @@ class ProductController extends Controller
             $categories = CategoryProduct::where('parent_id', $category->id)->get();
             $array = $categories->push($category)->pluck('id');
             /**Lấy product bằng array id của category*/
-            $products = Product::select('id', 'name', 'slug', 'SKU', 'status', 'active', 'auto_sold', 'price', 'cost', 'outstanding', 'category_id')->with(['category', 'first_image','values'])->filter($request->only('status'))->whereIn('category_id', $array)->where(function ($query) use ($request) {
+            $products = Product::select('id', 'name', 'slug', 'SKU', 'status', 'active', 'auto_sold', 'price', 'cost', 'outstanding', 'category_id')->with(['category', 'first_image', 'values'])->filter($request->only('status'))->whereIn('category_id', $array)->where(function ($query) use ($request) {
                 $query->where('SKU', 'LIKE', '%' . $request->term . '%');
             })->orderBy($sortBy, $sort_Direction)->paginate(15)->appends(['name' => $request->term, 'sortBy' => $request->sortBy, 'sortDirection' => $request->sort_Direction, 'status' => $request->status]);;
-          
+
             return Inertia::render('Product/Product', compact('parent_categories', 'productCount', 'category', 'products', 'sortBy', 'sort_Direction', 'status'));
 
 
-               /************ 
+            /************ 
              * 
              * 
              * 
@@ -189,14 +189,12 @@ class ProductController extends Controller
              * 
              * ************/
             $products = Product::select('id', 'name', 'slug', 'SKU', 'status', 'active', 'auto_sold', 'price', 'cost', 'outstanding', 'category_id')->with(['values.attribute'])
-            ->whereHas('values',function($q) use($request){
-                $q->where('value',['B','5','20','10','15','2 Mặt nâu']);
+                ->whereHas('values', function ($q) use ($request) {
+                    $q->where('value', ['B', '5', '20', '10', '15', '2 Mặt nâu']);
+                })->whereHas('values.attribute', function ($q) use ($request) {
+                    $q->where('name', ['Sóng giấy', 'Số lớp', 'Chiều dài ( cm )', 'Chiều rộng ( cm )', 'Chiều cao ( cm )', 'Mặt giấy']);
+                })->whereIn('category_id', $array)->get();
 
-             })->whereHas('values.attribute',function($q) use($request){
-                $q->where('name',['Sóng giấy','Số lớp','Chiều dài ( cm )', 'Chiều rộng ( cm )','Chiều cao ( cm )','Mặt giấy']);
-
-             })->whereIn('category_id', $array)->get();
-         
             /************ 
              * 
              * 
@@ -220,7 +218,7 @@ class ProductController extends Controller
             //     $value = AttributeValue::whereHas('attribute', function($q) use ($arr){
             //         $q->where('code',$arr['code']);
             //     })->where('value', $arr['value'])->first();
-              
+
             //     if($value){
             //         $value_id[]= $value->id;
             //     }
@@ -247,7 +245,7 @@ class ProductController extends Controller
         //     $q->where('state', 'running');
         // })->with('sale_items')->find($product->id);
         // return $product;
-        $product = $product->load('images', 'attributes', 'category', 'values.attribute','sale_items');
+        $product = $product->load('images', 'attributes', 'category', 'values.attribute', 'sale_items');
         $category = CategoryProduct::with('attributes.values')->where('slug', $slug)->first();
 
         if (!$category) {
@@ -403,25 +401,25 @@ class ProductController extends Controller
     }
 
 
-    public function export() 
+    public function export()
     {
         $attributes = Attribute::pluck('name')->toArray();
-       
+
         array_unshift($attributes, 'SKU', 'Tên sản phẩm', "Danh mục sản phẩm", "Giá bán", "Giá gốc");
-      
+
         return Excel::download(new ExportProducts($attributes), 'product.xlsx');
     }
 
-    public function exportbyCategory($slug) 
+    public function exportbyCategory($slug)
     {
         $category = CategoryProduct::where('slug', $slug)->first();
         $categories = CategoryProduct::where('parent_id', $category->id)->get();
         $array = $categories->push($category)->pluck('id');
 
-       
-        if($category){
+
+        if ($category) {
             $attributes = $category->attributes->pluck('name')->toArray();
-       
+
             array_unshift($attributes, 'SKU', 'Tên sản phẩm', "Danh mục sản phẩm", "Giá bán", "Giá gốc");
             // (new ProductExport($attributes, $array))->store($category->slug.'-product.xlsx');
             // $path = storage_path().'/'.'app'.'/'.$category->slug.'-product.xlsx';
@@ -430,9 +428,8 @@ class ProductController extends Controller
 
             // }
             // return back()->withSuccess('Export started!');
-           return Excel::download(new ProductExport($attributes, $array), $category->slug.'-product.xlsx');
-        }
-        else{
+            return Excel::download(new ProductExport($attributes, $array), $category->slug . '-product.xlsx');
+        } else {
             abort(404);
         }
     }
