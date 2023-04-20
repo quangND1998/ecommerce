@@ -1,0 +1,13 @@
+{
+    "name": "BlogPage",
+    "alias": "blogpage",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BlogPage\\Providers\\BlogPageServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

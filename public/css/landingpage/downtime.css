@@ -1,0 +1,88 @@
+.syotimer {
+    text-align: center;
+    padding: 0 0 10px;
+  }
+  .syotimer-cell {
+    display: inline-block;
+    margin: 0 5px;
+    background-color: black;
+    color: #ffffff;
+    padding: 5px;
+    width: 79px;
+    border-radius: 8px;
+  }
+  .syotimer-cell__value {
+    font-size: 32px;
+    color: #ffffff;
+    height: 51px;
+    line-height: 51px;
+    margin: 0 0 5px;
+  }
+  .syotimer-cell__unit {
+    font-family: Arial, serif;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .option {
+    font-weight: 700;
+  }
+
+  /* For layout demo page */
+  body {
+    font-family: Tahoma, serif;
+    font-size: 14px;
+    padding: 0 0 40px;
+  }
+  .row {
+    border-bottom: 2px solid #80a3ca;
+    /*padding-bottom: 10px;*/
+  }
+  .row blockquote {
+    border-left: 5px solid #999;
+    padding-left: 20px;
+    width: 600px;
+    margin: 0 auto;
+  }
+  pre {
+    width: 650px;
+    margin: 0 auto 10px;
+    border: solid gray;
+    border-width: 0.1em 0.1em 0.1em 0.8em;
+    padding: 0.2em 0.6em;
+    background: #f8f8f8;
+  }
+  .toggle-source-code {
+    width: 650px;
+    margin: 10px auto;
+    text-align: right;
+  }
+  .toggle-source-code:before {
+    font-size: 0.9em;
+    color: #666666;
+    border-bottom: 1px dashed #666666;
+  }
+  .toggle-source-code_action_show:before {
+    content: "Show code";
+  }
+  .toggle-source-code_action_hide:before {
+    content: "Hide code";
+  }
+  @media screen and (max-width: 480px) {
+    .syotimer-cell {
+        display: inline-block;
+        margin: 0 2px;
+        background-color: black;
+        color: #ffffff;
+        padding: 2px;
+        width: 50px;
+        border-radius: 8px;
+    }
+    .syotimer-cell__value {
+        font-size: 22px;
+        color: #ffffff;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 0 5px;
+    }
+  }
