@@ -158,17 +158,14 @@ class OrderController extends Controller
             $query->where('SKU', 'LIKE', '%' . $request->term . '%');
         })->where('status', 1)->get();
 
-        $response = Cache::rememberForever('provinces', function () {
-            return Http::get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')->json();
-        });
-
+    
         $payments = PaymentMethod::with('payment_info')->where('active', 1)->get();
 
         $provinces = $response;
         $cart = Cart::getContent();
         $total_price = Cart::getSubTotal();
         // return Inertia::render('Order/AddNewOrder', compact('products'));
-        return Inertia::render('Order/AddNewOrder', compact('products', 'provinces', 'cart', 'total_price', 'payments'));
+        return Inertia::render('Order/AddNewOrder', compact('products', 'cart', 'total_price', 'payments'));
     }
 
     /**

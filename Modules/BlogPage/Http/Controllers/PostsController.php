@@ -35,6 +35,7 @@ class PostsController extends Controller
         $posts = Post::select('id', 'name', 'slug', 'url', 'state', 'outstanding', 'image', 'post_time', 'created_at', 'updated_at')->with('tags')->filter($request->only('active'))->where(function ($query) use ($request) {
             $query->where('name', 'LIKE', '%' . $request->term . '%');
         })->orderBy($sortBy, $sort_Direction)->paginate(15)->appends(['name' => $request->term, 'sortBy' => $request->sortBy, 'sortDirection' => $request->sort_Direction, 'active' => $request->active]);;
+      
         return Inertia::render('Blog/Index', compact('posts',  'sortBy', 'sort_Direction', 'active'));
     }
 

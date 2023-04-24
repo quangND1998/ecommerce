@@ -6,6 +6,7 @@ use Modules\ProductCategory\Http\Controllers\AttributeController;
 use Modules\ProductCategory\Http\Controllers\AtrributeController;
 use Modules\ProductCategory\Http\Controllers\AttributeValueController;
 use Modules\ProductCategory\Http\Controllers\CategoryProductController;
+use Modules\ProductCategory\Http\Controllers\OptionsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,7 +89,24 @@ Route::middleware(['auth'])->prefix('admin')->group(
                 Route::post('priority', [ProductImageController::class, 'priority'])->name('priority');
             });
 
+            Route::prefix('{product}/options')->as('option.')->group(function () {
+                Route::get('/', [OptionsController::class, 'index'])->name('index');
+                Route::post('/store', [OptionsController::class, 'store'])->name('store');
+    
+     
+            });
+            Route::prefix('options')->as('option.')->group(function () {
+                Route::put('/{option}/update', [OptionsController::class, 'update'])->name('update');
+                Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
+                
+                // Route::get('/', [OptionsController::class, 'index'])->name('index');
+                // Route::post('/store', [OptionsController::class, 'store'])->name('store');
+            });
+          
             // Route::post('attributes/{product}', [ProductController::class, 'saveAttribute'])->name('saveAttribute');
         });
+
+
+     
     }
 );

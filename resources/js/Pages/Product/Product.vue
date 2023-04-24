@@ -256,10 +256,10 @@
                           class="dropdown-item text-sm py-2 cursor-pointer"
                           :href="route('warehouse.edit', [category.slug, product.id])"
                         >Chỉnh sửa</Link>
-                        <!-- <Link
+                        <Link
                           class="dropdown-item text-sm py-2 cursor-pointer"
-                          :href="route('warehouse.attributes',[category.slug,product.id])"
-                        >Thuộc tính</Link> -->
+                          :href="route('product.option.index',[product.id])"
+                        >Options</Link>
 
                         <a
                           class="dropdown-item text-sm py-2 cursor-pointer text-red-600"
