@@ -9,7 +9,7 @@ class OptionValue extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['value', 'label'];
+    protected $fillable = ['value', 'label', 'options_id', 'product_id'];
 
     public function option()
     {

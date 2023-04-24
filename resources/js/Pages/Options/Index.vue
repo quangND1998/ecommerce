@@ -89,7 +89,7 @@
               </button>
             
             </div>
-            <OptionValue :option_values="option.option_values" :option="option" />
+            <OptionValue :option_values="option.option_values" :option="option" :errors="errors"/>
           </div>
 
         </div>

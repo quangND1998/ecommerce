@@ -7,6 +7,7 @@ use Modules\ProductCategory\Http\Controllers\AtrributeController;
 use Modules\ProductCategory\Http\Controllers\AttributeValueController;
 use Modules\ProductCategory\Http\Controllers\CategoryProductController;
 use Modules\ProductCategory\Http\Controllers\OptionsController;
+use Modules\ProductCategory\Http\Controllers\OptionValueController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -99,8 +100,13 @@ Route::middleware(['auth'])->prefix('admin')->group(
                 Route::put('/{option}/update', [OptionsController::class, 'update'])->name('update');
                 Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
                 
-                // Route::get('/', [OptionsController::class, 'index'])->name('index');
-                // Route::post('/store', [OptionsController::class, 'store'])->name('store');
+                Route::prefix('{option}/values')->as('value.')->group(function () {
+                    Route::post('/store', [OptionValueController::class, 'store'])->name('store');
+                    // Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
+                    
+                    // Route::get('/', [OptionsController::class, 'index'])->name('index');
+                    // Route::post('/store', [OptionsController::class, 'store'])->name('store');
+                });
             });
           
             // Route::post('attributes/{product}', [ProductController::class, 'saveAttribute'])->name('saveAttribute');
