@@ -6,16 +6,19 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\ProductCategory\Entities\Options;
+use Modules\ProductCategory\Http\Requests\Options\OptionValueRequest;
 
 class OptionValueController extends Controller
 {
+    protected $allowStoreField = [
+        'name', 'visual'
+    ];
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index(Options $option)
     {
-        
     }
 
 
@@ -25,7 +28,7 @@ class OptionValueController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request,Options $option)
+    public function store(OptionValueRequest $request, Options $option)
     {
         
     }
