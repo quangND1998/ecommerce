@@ -295,7 +295,7 @@ export default {
   props: {
     products: Array,
     errors: Object,
-    provinces: Array,
+   
     cart: Array | Object,
     total_price: Number,
     payments: Array
@@ -304,6 +304,7 @@ export default {
     return {
       // districts: null,
       // wards: null,
+      provinces:null,
       cart_selected: [],
       form: this.$inertia.form({
         name: null,
@@ -316,6 +317,9 @@ export default {
         notes: null
       })
     };
+  },
+  mounted(){
+
   },
   computed: {
     selectAllCart: {
@@ -360,8 +364,12 @@ export default {
       }
     }
   },
-  mounted() {},
   methods: {
+    async getProvinces(){
+      const response = await fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');
+        const jsonData = await response.json();
+      this.provinces =jsonData
+      },
     onChangeCity(event) {
       this.form.district = null;
       this.form.wards = null;

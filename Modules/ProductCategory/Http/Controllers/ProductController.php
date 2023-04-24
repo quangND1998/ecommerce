@@ -173,10 +173,10 @@ class ProductController extends Controller
             $categories = CategoryProduct::where('parent_id', $category->id)->get();
             $array = $categories->push($category)->pluck('id');
             /**Lấy product bằng array id của category*/
-            $products = Product::select('id', 'name', 'slug', 'SKU', 'status', 'active', 'auto_sold', 'price', 'cost', 'outstanding', 'category_id')->with(['category', 'first_image', 'values'])->filter($request->only('status'))->whereIn('category_id', $array)->where(function ($query) use ($request) {
-                $query->where('SKU', 'LIKE', '%' . $request->term . '%');
+            $products = Product::select('id', 'name', 'slug', 'SKU', 'status', 'active', 'auto_sold', 'price', 'cost', 'outstanding', 'category_id')->with(['category', 'first_image'])->filter($request->only('status'))->whereIn('category_id', $array)->where(function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->term . '%');
             })->orderBy($sortBy, $sort_Direction)->paginate(15)->appends(['name' => $request->term, 'sortBy' => $request->sortBy, 'sortDirection' => $request->sort_Direction, 'status' => $request->status]);;
-
+            // return Product::whereIn('category_id', $array)->get();
             return Inertia::render('Product/Product', compact('parent_categories', 'productCount', 'category', 'products', 'sortBy', 'sort_Direction', 'status'));
 
 

@@ -5,16 +5,26 @@ namespace Modules\ProductCategory\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
+use Modules\ProductCategory\Entities\Options;
+use Modules\ProductCategory\Entities\Product;
+use Modules\ProductCategory\Http\Requests\Options\StoreOptionsRequest;
+use Modules\ProductCategory\Http\Requests\Options\UpdateOptionsRequest;
 
 class OptionsController extends Controller
 {
+    protected $allowStoreField = [
+        'name', 'visual'
+    ];
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
-    {
-        return view('productcategory::index');
+    public function index(Product $product)
+    {   
+        $options = Options::with('optionValues')->where('product_id', $product->id)->get();
+        return Inertia::render('Options/Index',compact('options', 'product'));
+
     }
 
     /**
@@ -31,9 +41,13 @@ class OptionsController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(StoreOptionsRequest $request, Product $product)
     {
-        //
+       
+        $data = new Options($request->only($this->allowStoreField));
+      
+        $product->options()->save($data);
+        return back()->with('success', 'Create successfully');
     }
 
     /**
@@ -62,9 +76,11 @@ class OptionsController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOptionsRequest $request, Options $option)
     {
-        //
+        $data = $request->only($this->allowStoreField);
+        $option->update($data);
+        return back()->with('success','Update successfully');
     }
 
     /**
@@ -72,8 +88,9 @@ class OptionsController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Options $option)
     {
-        //
+        $option->delete();
+        return back()->with('success', 'Delete successfully');
     }
 }

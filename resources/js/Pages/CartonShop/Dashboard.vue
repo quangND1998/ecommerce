@@ -129,7 +129,7 @@ export default {
     orders: Array,
     order_pending: Number,
     errors: Object,
-    revenue: String
+    revenue: String | Number
   },
   data() {
     return {};
