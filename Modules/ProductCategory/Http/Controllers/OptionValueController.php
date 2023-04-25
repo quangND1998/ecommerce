@@ -8,11 +8,12 @@ use Illuminate\Routing\Controller;
 use Modules\ProductCategory\Entities\Options;
 use Modules\ProductCategory\Entities\OptionValue;
 use Modules\ProductCategory\Http\Requests\Options\OptionValueRequest;
+use Modules\ProductCategory\Http\Requests\Options\UpdateOptionValueRequest;
 
 class OptionValueController extends Controller
 {
     protected $allowStoreField = [
-        'name', 'visual'
+        'value', 'label'
     ];
     /**
      * Display a listing of the resource.
@@ -49,9 +50,13 @@ class OptionValueController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOptionValueRequest $request, OptionValue $option_value)
     {
-        //
+        
+        $data = $request->only($this->allowStoreField);
+        $option_value->update($data);
+        return back()->with('success', 'Update successfully');
+
     }
 
     /**
@@ -59,8 +64,10 @@ class OptionValueController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(OptionValue $value)
     {
-        //
+     
+       $value->delete();
+       return back()->with('success','Delete successfully');
     }
 }

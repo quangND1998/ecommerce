@@ -5,7 +5,7 @@ namespace Modules\ProductCategory\Http\Requests\Options;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class OptionValueRequest extends FormRequest
+class UpdateOptionValueRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,11 +14,11 @@ class OptionValueRequest extends FormRequest
      */
     public function rules()
     {
-   
+       
         return [
-            'value' => ['required', Rule::unique('option_values', 'value')->where('options_id', $this->option->id)],
+            'value' => ['required', Rule::unique('option_values', 'value')->ignore($this->option_value->id)],
             'label' => 'nullable',
-
+            
         ];
     }
 

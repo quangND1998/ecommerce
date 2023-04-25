@@ -102,11 +102,13 @@ Route::middleware(['auth'])->prefix('admin')->group(
                 
                 Route::prefix('{option}/values')->as('value.')->group(function () {
                     Route::post('/store', [OptionValueController::class, 'store'])->name('store');
-                    // Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
-                    
-                    // Route::get('/', [OptionsController::class, 'index'])->name('index');
-                    // Route::post('/store', [OptionsController::class, 'store'])->name('store');
                 });
+                Route::prefix('/value')->as('value.')->group(function () {
+                    Route::put('/{option_value}/update', [OptionValueController::class, 'update'])->name('update');
+                    Route::delete('/{value}/delete', [OptionValueController::class, 'destroy'])->name('destroy');
+
+                });
+               
             });
           
             // Route::post('attributes/{product}', [ProductController::class, 'saveAttribute'])->name('saveAttribute');
