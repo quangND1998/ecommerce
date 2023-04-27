@@ -8,11 +8,14 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\ProductCategory\Entities\Options;
 use Modules\ProductCategory\Entities\Product;
+use Modules\ProductCategory\Entities\Sku;
+use Modules\ProductCategory\Entities\Variants;
 use Modules\ProductCategory\Http\Requests\Options\StoreOptionsRequest;
 use Modules\ProductCategory\Http\Requests\Options\UpdateOptionsRequest;
-
+use Modules\ProductCategory\Http\Controllers\VariantTrait;
 class OptionsController extends Controller
 {
+    use VariantTrait;
     protected $allowStoreField = [
         'name', 'visual'
     ];
@@ -21,10 +24,13 @@ class OptionsController extends Controller
      * @return Renderable
      */
     public function index(Product $product)
-    {   
-        $options = Options::with('optionValues')->where('product_id', $product->id)->get();
-        return Inertia::render('Options/Index',compact('options', 'product'));
+    {
 
+
+        $product->load('skus.variants.optionValue');
+        // return $product;
+        $options = Options::with('optionValues')->where('product_id', $product->id)->get();
+        return Inertia::render('Options/Index', compact('options', 'product'));
     }
 
     /**
@@ -43,10 +49,18 @@ class OptionsController extends Controller
      */
     public function store(StoreOptionsRequest $request, Product $product)
     {
-       
+
         $data = new Options($request->only($this->allowStoreField));
-      
+
         $product->options()->save($data);
+
+        $product->skus()->delete();
+        // generate and save variant
+        $optionValues = $product->optionValues->groupBy('option_id')->values()->toArray();
+        $variants = $this->generateVariant($optionValues);
+
+      
+        $this->saveVariant($variants,$product);
         return back()->with('success', 'Create successfully');
     }
 
@@ -80,7 +94,7 @@ class OptionsController extends Controller
     {
         $data = $request->only($this->allowStoreField);
         $option->update($data);
-        return back()->with('success','Update successfully');
+        return back()->with('success', 'Update successfully');
     }
 
     /**
@@ -93,4 +107,6 @@ class OptionsController extends Controller
         $option->delete();
         return back()->with('success', 'Delete successfully');
     }
+
+   
 }

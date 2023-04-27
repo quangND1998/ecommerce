@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class OptionValue extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['value', 'label', 'options_id', 'product_id'];
+    protected $table = 'option_values';
+    protected $fillable = ['id','value', 'label', 'options_id', 'product_id'];
 
     public function option()
     {
