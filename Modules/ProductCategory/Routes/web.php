@@ -22,6 +22,7 @@ use Modules\ProductCategory\Http\Controllers\OptionValueController;
 use Modules\ProductCategory\Http\Controllers\ProductCategoryController;
 use Modules\ProductCategory\Http\Controllers\ProductController;
 use Modules\ProductCategory\Http\Controllers\ProductImageController;
+use Modules\ProductCategory\Http\Controllers\VariantController;
 
 Route::middleware(['auth'])->prefix('admin')->group(
     function () {
@@ -93,26 +94,25 @@ Route::middleware(['auth'])->prefix('admin')->group(
             Route::prefix('{product}/options')->as('option.')->group(function () {
                 Route::get('/', [OptionsController::class, 'index'])->name('index');
                 Route::post('/store', [OptionsController::class, 'store'])->name('store');
-    
-     
             });
             Route::prefix('options')->as('option.')->group(function () {
                 Route::put('/{option}/update', [OptionsController::class, 'update'])->name('update');
                 Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
-                
+
                 Route::prefix('{option}/values')->as('value.')->group(function () {
                     Route::post('/store', [OptionValueController::class, 'store'])->name('store');
-                    // Route::delete('/{option}/delete', [OptionsController::class, 'destroy'])->name('destroy');
-                    
-                    // Route::get('/', [OptionsController::class, 'index'])->name('index');
-                    // Route::post('/store', [OptionsController::class, 'store'])->name('store');
+                });
+                Route::prefix('/value')->as('value.')->group(function () {
+                    Route::put('/{option_value}/update', [OptionValueController::class, 'update'])->name('update');
+                    Route::delete('/{value}/delete', [OptionValueController::class, 'destroy'])->name('destroy');
                 });
             });
-          
+
+            Route::prefix('variant')->as('variant.')->group(function () {
+                Route::post('', [VariantController::class, 'store'])->name('store');
+            });
+
             // Route::post('attributes/{product}', [ProductController::class, 'saveAttribute'])->name('saveAttribute');
         });
-
-
-     
     }
 );

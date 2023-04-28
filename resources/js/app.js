@@ -29,7 +29,7 @@ const store = new Vuex.Store({
 });
 createInertiaApp({
     resolve: name =>
-        import (`./Pages/${name}`),
+        require(`./Pages/${name}`),
     title: title => `${title} - CartonShop`,
     setup({ el, App, props, plugin }) {
         Vue.use(plugin)
@@ -44,23 +44,23 @@ Vue.prototype.route = route
 
 Vue.mixin({
     methods: {
-        hasAnyPermission: function(permissions) {
+        hasAnyPermission: function (permissions) {
 
             var allPermissions = this.$page.props.auth.can;
             var hasPermission = false;
-            permissions.forEach(function(item) {
+            permissions.forEach(function (item) {
                 if (allPermissions[item]) hasPermission = true;
             });
             return hasPermission;
         },
 
 
-        formatDate: function(value) {
+        formatDate: function (value) {
             if (value) {
                 return moment(String(value)).format('DD/MM/YYYY HH:mm')
             }
         },
-        formatTimeDayMonthyear: function(value) {
+        formatTimeDayMonthyear: function (value) {
             if (value) {
                 return moment(String(value)).format('HH:mm DD/MM/YYYY ')
             }
@@ -74,7 +74,7 @@ Vue.mixin({
             console.log(typeof object);
             // // // let first = Object.assign({}, object[0]);
             let array = [];
-            $.each(object, function(key, value) {
+            $.each(object, function (key, value) {
                 array.push(parseInt(value.id));
             });
             return array;

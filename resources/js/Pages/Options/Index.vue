@@ -89,13 +89,13 @@
               </button>
             
             </div>
-            <OptionValue :option_values="option.option_values" :option="option" :errors="errors"/>
+            <OptionValue :option_values="option.option_values" :option="option" :errors="errors" :key="option.id"/>
           </div>
 
         </div>
       </div>
     </div>
-
+    <VariantManager :product="product" />
   </section>
 </template>
     
@@ -106,6 +106,7 @@ import Alert from "@/Components/Alert";
 import SearchCategory from "@/Pages/CategoryProduct/SearchCategory";
 import Header from "@/Pages/Product/Header";
 import OptionValue from '@/Pages/Options/Value'
+import VariantManager from '@/Pages/Options/VariantManager'
 export default {
   layout: Layout,
   components: {
@@ -114,7 +115,8 @@ export default {
     SearchCategory,
     Head,
     Header,
-    OptionValue
+    OptionValue,
+    VariantManager
 
   },
   props: {

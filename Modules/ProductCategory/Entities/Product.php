@@ -107,12 +107,12 @@ class Product extends Model
 
     public function optionValues()
     {
-        return $this->hasMany(OptionValue::class);
+        return $this->hasMany(OptionValue::class, 'product_id');
     }
 
     public function skus()
     {
-        return $this->hasMany(SKU::class);
+        return $this->hasMany(Sku::class);
     }
 
     public function variants()

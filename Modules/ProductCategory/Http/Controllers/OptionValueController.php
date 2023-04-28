@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\ProductCategory\Entities\Options;
 use Modules\ProductCategory\Entities\OptionValue;
+use Modules\ProductCategory\Entities\Product;
 use Modules\ProductCategory\Http\Requests\Options\OptionValueRequest;
-
+use Modules\ProductCategory\Http\Requests\Options\UpdateOptionValueRequest;
+use Modules\ProductCategory\Http\Controllers\VariantTrait;
 class OptionValueController extends Controller
 {
+    use VariantTrait;
     protected $allowStoreField = [
-        'name', 'visual'
+        'value', 'label'
     ];
     /**
      * Display a listing of the resource.
@@ -39,6 +42,26 @@ class OptionValueController extends Controller
         $option_value->options_id= $option->id;
         $option_value->product_id = $option->product_id;
         $option_value->save();
+        $optionValues = [];
+        $product = Product::find($option->product_id);
+     
+        if ($product->optionValues->count() > 1) {
+            $previousOptionValues = $product->optionValues
+                ->whereNotIn('options_id', $option_value->options_id)
+                ->groupBy('options_id')
+                ->values()
+                ->toArray();
+            $optionValues = array_merge($previousOptionValues, [[$option_value->toArray()]]);
+        } else {
+            $optionValues[] = [$option_value->toArray()];
+        }
+       
+        // generate and save variant
+        $variants = $this->generateVariant($optionValues);
+
+     
+        $this->saveVariant($variants, $product);
+    
         return back()->with('success', 'Create successfully');
     }
 
@@ -49,9 +72,13 @@ class OptionValueController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOptionValueRequest $request, OptionValue $option_value)
     {
-        //
+        
+        $data = $request->only($this->allowStoreField);
+        $option_value->update($data);
+        return back()->with('success', 'Update successfully');
+
     }
 
     /**
@@ -59,8 +86,12 @@ class OptionValueController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(OptionValue $value)
     {
-        //
+     
+       $value->delete();
+       return back()->with('success','Delete successfully');
     }
+
+
 }
