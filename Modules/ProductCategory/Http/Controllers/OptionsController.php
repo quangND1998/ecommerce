@@ -21,11 +21,45 @@ class OptionsController extends Controller
      * @return Renderable
      */
     public function index(Product $product)
-    {   
+    {
+        // return $product;
+        $result = $this->gradingStudents([73, 67, 38, 33]);
+        return $result;
         $options = Options::with('optionValues')->where('product_id', $product->id)->get();
-        return Inertia::render('Options/Index',compact('options', 'product'));
-
+        return Inertia::render('Options/Index', compact('options', 'product'));
     }
+
+    function gradingStudents($grades)
+    {
+        // Write your code here
+        $array = [];
+        foreach ($grades as $grade) {
+            $array[] = $this->format($grade);
+        }
+        return $array;
+    }
+
+    function format($grade)
+    {
+        $floor = ceil(($grade + 5) / 10) * 10;
+        return $floor;
+        // if ($grade < 38) {
+
+        //     return $grade;
+        // }
+        // if ($floor == $grade) {
+        //     return $grade;
+        // } elseif ($floor > $grade) {
+
+        //     if (($floor - $grade) < 3) {
+
+        //         return $floor;
+        //     } else {
+        //         return $grade;
+        //     }
+        // }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -43,9 +77,9 @@ class OptionsController extends Controller
      */
     public function store(StoreOptionsRequest $request, Product $product)
     {
-       
+
         $data = new Options($request->only($this->allowStoreField));
-      
+
         $product->options()->save($data);
         return back()->with('success', 'Create successfully');
     }
@@ -80,7 +114,7 @@ class OptionsController extends Controller
     {
         $data = $request->only($this->allowStoreField);
         $option->update($data);
-        return back()->with('success','Update successfully');
+        return back()->with('success', 'Update successfully');
     }
 
     /**
