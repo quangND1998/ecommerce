@@ -112,6 +112,10 @@ Route::middleware(['auth'])->prefix('admin')->group(
                 Route::post('', [VariantController::class, 'store'])->name('store');
             });
 
+            Route::prefix('sku')->as('sku.')->group(function () {
+                Route::delete('/{id}/delete', [VariantController::class, 'deleteSku'])->name('delete');
+            });
+
             // Route::post('attributes/{product}', [ProductController::class, 'saveAttribute'])->name('saveAttribute');
         });
     }

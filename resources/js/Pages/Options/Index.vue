@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-    <VariantManager :product="product" />
+    <VariantManager :product="product" :errors="errors" />
   </section>
 </template>
     

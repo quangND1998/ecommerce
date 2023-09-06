@@ -81,7 +81,7 @@
     <div>
       <div class="m-8 bg-white">
         <div class="p-4">
-          <h2 class="font-semibold text-3xl flex mr-2">Danh sáchthuộc tính</h2>
+          <h2 class="font-semibold text-3xl flex mr-2">Danh sáchthuộc tínhsss</h2>
           <div class="my-3">
             <div class="flex">
               <BreadCrumb :crumbs="crumbs"></BreadCrumb>

@@ -29,7 +29,6 @@ class OptionsController extends Controller
 
 
         $product->load('skus.variants.optionValue');
-    
         $options = Options::with('optionValues')->where('product_id', $product->id)->get();
         return Inertia::render('Options/Index', compact('options', 'product'));
     }
@@ -90,10 +89,10 @@ class OptionsController extends Controller
         $product->skus()->delete();
         // generate and save variant
         $optionValues = $product->optionValues->groupBy('option_id')->values()->toArray();
-        $variants = $this->generateVariant($optionValues);
+        $variants = $product->generateVariant($optionValues);
 
 
-        $this->saveVariant($variants, $product);
+        $product->saveVariant($variants);
         return back()->with('success', 'Create successfully');
     }
 
@@ -137,6 +136,7 @@ class OptionsController extends Controller
      */
     public function destroy(Options $option)
     {
+        $option->optionValues()->delete();
         $option->delete();
         return back()->with('success', 'Delete successfully');
     }

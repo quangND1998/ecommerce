@@ -5,6 +5,8 @@ namespace Modules\ProductCategory\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
+use Modules\ProductCategory\Entities\Sku;
 
 class VariantController extends Controller
 {
@@ -33,14 +35,31 @@ class VariantController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+       
         $request->validate([
-
+            
             'skus.*.name' => 'nullable|string',
-            'skus.*.barcode' => 'nullable|string',
             'skus.*.price' => 'required|numeric',
+            'skus.*.barcode' => 'nullable|string',
             'skus.*.stock' => 'required|numeric',
         ]);
+        foreach($request->skus as $index => $sku){
+
+            $request->validate([
+                "skus.$index.name" => ['nullable', 'string', Rule::unique('skus', 'name')->ignore($sku['id'])],
+                "skus.$index.barcode" => ['nullable', 'string', Rule::unique('skus', 'barcode')->ignore($sku['id'])],
+            ], [
+                "skus.$index.name.unique" => 'Duplicated.',
+                "skus.$index.barcode.unique" => 'Duplicated.'
+            ]);
+            $sku = Sku::find($sku['id'])->update([
+                'name' => $sku['name'],
+                'price' => $sku['price'],
+                'barcode' => $sku['barcode'],
+                'stock' => $sku['stock'],
+            ]);
+        }
+        return back()->with('success', 'Update successfully');
     }
 
     /**
@@ -83,4 +102,13 @@ class VariantController extends Controller
     {
         //
     }
+
+    public function deleteSku($id)
+    {
+        $sku = Sku::findOrFail($id);
+        $sku->delete();
+        return back()->with('success', 'Update successfully');
+    }
+
+    
 }

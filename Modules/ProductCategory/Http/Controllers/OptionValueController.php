@@ -57,10 +57,10 @@ class OptionValueController extends Controller
         }
        
         // generate and save variant
-        $variants = $this->generateVariant($optionValues);
+        $variants = $product->generateVariant($optionValues);
 
      
-        $this->saveVariant($variants, $product);
+        $product->saveVariant($variants);
     
         return back()->with('success', 'Create successfully');
     }

@@ -75,7 +75,7 @@
           <table class="min-w-full text-left text-sm font-light">
             <thead class="border-b font-medium dark:border-neutral-500">
               <tr>
-                <th scope="col" class="px-6 py-4 text-sm font-semibold">ID</th>
+                <th scope="col" class="px-6 py-4 text-sm font-semibold">IDSSSS</th>
 
                 <th scope="col" class="px-6 py-4 text-sm font-semibold">Value</th>
 
